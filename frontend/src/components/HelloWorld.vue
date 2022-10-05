@@ -1,151 +1,106 @@
 <template>
-  <v-container>
+  <v-container fluid class="pa-6">
     <v-row class="text-center">
-      <v-col cols="12">
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        />
+      <v-col cols="12" md="7" >
+        <v-card >
+          <v-card-title>실시간모니터링</v-card-title>
+          <v-card-text class="mt-5" >
+            <v-row  >
+              <v-col cols="12" md="4" >
+                <v-row>
+                  <v-col style="display: flex; align-items: center; justify-content: center;" >
+                    <v-icon x-large>
+                    mdi-thermometer
+                  </v-icon>
+                  <span class="card-light-grey text-h4">{{sensor.tmp}}°</span>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <div class="text-h6">Temp</div>
+                  </v-col>
+                </v-row>
+                
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-row>
+                  <v-col style="display: flex; align-items: center; justify-content: center">
+                    <img
+                      :src="require('../assets/Pressure.svg')"
+                      :width="40"
+                      class="mr-1"
+                    />
+                    
+                  <span class="card-light-grey text-h4 ml-1">{{sensor.pres}}</span><span class="text-h5">Pa</span>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <div class="text-h6">Pressure</div>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-row>
+                  <v-col style="display: flex; align-items: center; justify-content: center">
+                   <v-icon x-large>
+                    {{sensor.heat==='0'?'mdi-radiator-off':'mdi-radiator'}}
+                  </v-icon>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <div class="text-h6">Heater</div>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          
+          
+          
+        </v-card>
       </v-col>
 
-      <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Vuetify
-        </h1>
-
-        <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br>please join our online
-          <a
-            href="https://community.vuetifyjs.com"
-            target="_blank"
-          >Discord Community</a>
-        </p>
+      <v-col cols="12" md="5">
+        <v-card >차량감지여부</v-card>
+      </v-col>
+    </v-row>
+    <v-row class="text-center">
+      <v-col cols="12" md="12">
+        <v-card>로그
+          <v-data-table
+            :headers="headers"
+            :items="logdata"
+            :items-per-page="5">
+            </v-data-table>
+        </v-card>
       </v-col>
 
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          What's next?
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ next.text }}
-          </a>
-        </v-row>
-      </v-col>
-
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          Important Links
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ link.text }}
-          </a>
-        </v-row>
-      </v-col>
-
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          Ecosystem
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(eco, i) in ecosystem"
-            :key="i"
-            :href="eco.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ eco.text }}
-          </a>
-        </v-row>
-      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+
   export default {
     name: 'HelloWorld',
+    props:['sensor', 'logdata'],
+    mounted(){
 
+    },
     data: () => ({
-      ecosystem: [
-        {
-          text: 'vuetify-loader',
-          href: 'https://github.com/vuetifyjs/vuetify-loader',
-        },
-        {
-          text: 'github',
-          href: 'https://github.com/vuetifyjs/vuetify',
-        },
-        {
-          text: 'awesome-vuetify',
-          href: 'https://github.com/vuetifyjs/awesome-vuetify',
-        },
-      ],
-      importantLinks: [
-        {
-          text: 'Documentation',
-          href: 'https://vuetifyjs.com',
-        },
-        {
-          text: 'Chat',
-          href: 'https://community.vuetifyjs.com',
-        },
-        {
-          text: 'Made with Vuetify',
-          href: 'https://madewithvuejs.com/vuetify',
-        },
-        {
-          text: 'Twitter',
-          href: 'https://twitter.com/vuetifyjs',
-        },
-        {
-          text: 'Articles',
-          href: 'https://medium.com/vuetify',
-        },
-      ],
-      whatsNext: [
-        {
-          text: 'Explore components',
-          href: 'https://vuetifyjs.com/components/api-explorer',
-        },
-        {
-          text: 'Select a layout',
-          href: 'https://vuetifyjs.com/getting-started/pre-made-layouts',
-        },
-        {
-          text: 'Frequently Asked Questions',
-          href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-        },
-      ],
+              headers: [
+          {
+            text: 'Num',
+            align: 'start',
+            value: 'id',
+          },
+          { text: 'Type', value: 'data_type' },
+          { text: 'Value', value: 'value' },
+          { text: 'Datetime', value: 'datetime' }
+        ],
+
     }),
   }
 </script>

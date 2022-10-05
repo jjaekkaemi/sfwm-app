@@ -3,5 +3,9 @@ module.exports = {
   transpileDependencies: [
     'vuetify'
   ],
-  outputDir: path.resolve(__dirname, '../dist')
+  outputDir: path.resolve(__dirname, '../dist'),
+  devServer: {
+    host: '0.0.0.0',
+    port: 8080,
+  }
 }

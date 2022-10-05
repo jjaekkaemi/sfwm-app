@@ -28,24 +28,48 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+          @click="connect()"
+          >WEBSOCKET {{ws_connect ? "disconnect":"connect"}}
       </v-btn>
+
     </v-app-bar>
 
     <v-main>
-      <HelloWorld/>
+      <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <v-card>
+        <v-card-title class="text-h5 red lighten-2">
+          Alert
+        </v-card-title>
+
+        <v-card-text v-text="dialog_content">
+          
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog = false"
+          >
+            I accept
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+      <HelloWorld :sensor="sensor" :logdata="logdata"/>
     </v-main>
   </v-app>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld';
-
+import io from "socket.io-client"
 export default {
   name: 'App',
 
@@ -54,7 +78,46 @@ export default {
   },
 
   data: () => ({
-    //
+      sensor:{
+        tmp:0,
+        pres:0,
+        heat:'0'
+
+      },
+      dialog:false,
+      dialog_content:"",
+      ws_connect:false,
+      logdata: [
+        ],
+    
   }),
+  async mounted(){
+      let result = await this.$http.get("socket")
+      let socket = io(`localhost:${result.data.port}`,{transports: ["websocket"]})
+      result = await this.$http.get("log")
+      this.logdata = result.data
+      socket.on("msg", (data)=>{
+        console.log("msg!!!", data)
+      })
+      socket.on("data", (data)=>{
+        this.sensor = data
+        console.log("data!", data)
+      })
+      socket.on("alert", (data)=>{
+        this.dialog = true
+        this.dialog_content = data
+      })
+      socket.on("ws_disconnect", (data)=>{
+        this.ws_connect = data
+        console.log("data!", data)
+      })
+      
+  },
+  methods:{
+    async connect(){
+      let result = await this.$http.get("websocket")
+      this.ws_connect = result.data.ws 
+    }
+  }
 };
 </script>
