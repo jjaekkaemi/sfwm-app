@@ -5,6 +5,7 @@ var logger = require('morgan');
 const { createDatabase, checkDB, insertFireCode,insertLog, insertData } = require("./database.js");
 const {connectIO} =require("./socket.js")
 var indexRouter = require('./routes/index');
+const { stringify } = require('querystring');
 
 var app = express();
 
@@ -20,7 +21,6 @@ createDatabase("database.db")
 // console.log(insertData(1, "324", new Date(), 1))
 app.use('/', indexRouter);
 connectIO(app)
-
 // let websocket = new WebSocket("192.168.0.34:8080")
 // websocket.onopen(() => {
 //     console.log("open")

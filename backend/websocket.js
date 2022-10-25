@@ -3,7 +3,7 @@ let sensor_data = ""
 let ws = null;
 let dataInterval = null
 const {sendData} = require("./socket.js")
-const {insertData, insertLog} = require('./database.js')
+const {insertData, insertLog, selectLogCount, selectDataCount} = require('./database.js')
 const DATA_TYPE = {
     tmp:{
         id:0,
@@ -20,8 +20,10 @@ const DATA_TYPE = {
 function returnData(){
     return sensor_data
 }
-function connectWS(){
-    alert({tmp:1, pres:2})
+async function connectWS(){
+    // let result2 = {tmp:100, pres:300, heat:'0' }
+    // sendData("data",result2)
+    // await checkSensorData(result2)
     if(ws!=null){
         disconnectWS()
     }
@@ -31,15 +33,16 @@ function connectWS(){
             ws.on('open', function open() {
                 console.log("open")
                 // ws.send("get")
+                sendData("ws_connect", true)
                 dataInterval = setInterval(()=>{
                     sendWS("get")
                 }, 30000)
             });
-            ws.on('message', function message(data) {
+            ws.on('message', async function message(data) {
                 let result = JSON.parse(data.toString(`utf-8`))
                 sensor_data = result
                 sendData("data",result)
-                checkSensorData(result)
+                await checkSensorData(result)
                 
             });
             ws.on('close', function close() {
@@ -58,10 +61,12 @@ function connectWS(){
     return ws
 
 }
-function checkSensorData(jsondata){
+async function checkSensorData(jsondata){
     for (j in jsondata){
-        let id = insertData(DATA_TYPE[j].id, jsondata[j], new Date, 1)
-        if(DATA_TYPE[j].id<2) logCheck(j, jsondata, id)
+        let logdata = {data_type: DATA_TYPE[j].id, value:jsondata[j], datetime: new Date, code_id: 1,}
+        insertData(logdata);
+        let id = await selectDataCount()
+        if(DATA_TYPE[j].id<2) await logCheck(j, jsondata, id[0].count, logdata)
     }
 }
 function disconnectWS(){
@@ -69,27 +74,18 @@ function disconnectWS(){
     ws = null;
     clearInterval(dataInterval)
     dataInterval = null
-    sendData("ws_disconnect", false)
+    sendData("ws_connect", false)
 }
-function logCheck(j, jsondata, id){
+async function logCheck(j, jsondata, id, logdata){
     if(Number(jsondata[j])>DATA_TYPE[j].alert){
-        let alertdata = {}
-        alertdata[ALERT_DATA[j].id]= jsondata[j]
+        let result = await selectLogCount()
+        let alertdata = logdata
+        alertdata.id = result[0].count+1
         sendData("alert", alertdata)
         insertLog(id)
     }
 }
-function alert(j, jsondata){
 
-    for (j in jsondata){
-        if(Number(jsondata[j])>ALERT_DATA[j].alert){
-            let alertdata = {}
-            alertdata[ALERT_DATA[j].id]= jsondata[j]
-            sendData("alert", alertdata)
-            insertLog()
-        }
-    }
-}
 function sendWS(data){
     ws.send(data)
 }

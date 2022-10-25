@@ -11,57 +11,34 @@
       </div>
 
       <v-spacer></v-spacer>
-
-      <v-btn
-          @click="connect()"
-          >WEBSOCKET {{ws_connect ? "disconnect":"connect"}}
-      </v-btn>
-
     </v-app-bar>
 
-    <v-main style="background:#EDEDED;">
+    <v-main>
       <v-dialog
       v-model="dialog"
       width="500"
-      
     >
       <v-card>
-        <v-card-title class="text-h5 red lighten-2">
-          Alert
-        </v-card-title>
-
-        <v-card-text v-text="dialog_content">
-          
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="dialog = false"
-          >
-            I accept
-          </v-btn>
-        </v-card-actions>
+        <v-img src="./assets/dialog.svg"/>
       </v-card>
     </v-dialog>
-      <HelloWorld :sensor="sensor" :logdata="logdata"/>
+       <v-img
+          alt="Vuetify Logo"
+          class="shrink"
+          contain
+          :src="svg_data"
+          transition="scale-transition"
+          
+        />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
 import io from "socket.io-client"
 export default {
   name: 'App',
 
-  components: {
-    HelloWorld,
-  },
 
   data: () => ({
       sensor:{
@@ -73,12 +50,9 @@ export default {
       dialog:false,
       dialog_content:"",
       ws_connect:false,
-      logdata: [{
-        id: 1,
-        datetime:"2022-10-04 11:09:01",
-        type:"불법 주·정차가 감지되었습니다."
-      }
+      logdata: [
         ],
+      svg_data: require("./assets/desktop_5_no.svg")
     
   }),
   async mounted(){
@@ -93,12 +67,13 @@ export default {
         this.sensor = data
         console.log("data!", data)
       })
-      socket.on("alert", (data)=>{
+      socket.on("alert", ()=>{
         this.dialog = true
-        this.dialog_content = data
-        this.logdata.push(data)
+        // this.dialog_content = data
+        // this.logdata.push(data)
+        this.svg_data = require("./assets/desktop_5_yes.svg")
       })
-      socket.on("ws_connect", (data)=>{
+      socket.on("ws_disconnect", (data)=>{
         this.ws_connect = data
         console.log("data!", data)
       })
