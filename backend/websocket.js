@@ -29,7 +29,7 @@ async function connectWS(){
     }
     else{
         try{
-            ws = new WebSocket('ws://192.168.0.34:8080');
+            ws = new WebSocket('ws://192.168.0.197:3001');
             ws.on('open', function open() {
                 console.log("open")
                 // ws.send("get")
@@ -40,9 +40,23 @@ async function connectWS(){
             });
             ws.on('message', async function message(data) {
                 let result = JSON.parse(data.toString(`utf-8`))
-                sensor_data = result
-                sendData("data",result)
-                await checkSensorData(result)
+                switch(result.type){
+                    case 0 :
+                        sensor_data = result.data
+                        sendData("data",sensor_data)
+                        await checkSensorData(sensor_data)
+                        break
+                    case 1:
+                        
+                        console.log("경보", result.data)
+                        let insertdata = {data_type:3, value:result.data, datetime: new Date, code_id: 1}
+                        insertData(insertdata);
+                        let id = await selectDataCount()
+                        await logCheck(id[0].count, insertdata)
+
+                        break
+                }
+                
                 
             });
             ws.on('close', function close() {
@@ -65,8 +79,8 @@ async function checkSensorData(jsondata){
     for (j in jsondata){
         let logdata = {data_type: DATA_TYPE[j].id, value:jsondata[j], datetime: new Date, code_id: 1,}
         insertData(logdata);
-        let id = await selectDataCount()
-        if(DATA_TYPE[j].id<2) await logCheck(j, jsondata, id[0].count, logdata)
+        // let id = await selectDataCount()
+        // if(DATA_TYPE[j].id<2) await logCheck(j, jsondata, id[0].count, logdata)
     }
 }
 function disconnectWS(){
@@ -76,16 +90,22 @@ function disconnectWS(){
     dataInterval = null
     sendData("ws_connect", false)
 }
-async function logCheck(j, jsondata, id, logdata){
-    if(Number(jsondata[j])>DATA_TYPE[j].alert){
-        let result = await selectLogCount()
-        let alertdata = logdata
-        alertdata.id = result[0].count+1
-        sendData("alert", alertdata)
-        insertLog(id)
-    }
+                        // async function logCheck(j, jsondata, id, logdata){
+//     if(Number(jsondata[j])>DATA_TYPE[j].alert){
+//         let result = await selectLogCount()
+//         let alertdata = logdata
+//         alertdata.id = result[0].count+1
+//         sendData("alert", alertdata)
+//         insertLog(id)
+//     }
+// }
+async function logCheck(id, logdata){
+    let result = await selectLogCount()
+    let alertdata = logdata
+    alertdata.id = result[0].count+1
+    sendData("alert", alertdata)
+    insertLog(id)
 }
-
 function sendWS(data){
     ws.send(data)
 }

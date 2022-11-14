@@ -95,7 +95,7 @@ export default {
       })
       socket.on("alert", (data)=>{
         this.dialog = true
-        this.dialog_content = data
+        this.dialog_content = "불법 차량이 감지되었습니다."
         this.logdata.push(data)
       })
       socket.on("ws_connect", (data)=>{

@@ -19,7 +19,7 @@
               <v-card-title>소화전 상태</v-card-title>
               <v-divider width="95%" class="ml-4 font-weight-medium mt-n3"/>
               <v-card-text>
-                <Content :content_data="fire_hydrant_status"/>
+                <Content :content_data="returnFireStatus"/>
               </v-card-text>
             </v-card>
           </v-col>
@@ -39,7 +39,7 @@
         <v-card>
           <v-card-title >로그</v-card-title>
           <v-divider width="95%" class="ml-4 font-weight-medium mt-n3"/>
-          <Table :loglist="loglist" />
+          <Table :loglist="logdata" />
         </v-card>
       </v-col>
     </v-row>
@@ -53,6 +53,30 @@ import Table from "./table.vue"
     name: 'HelloWorld',
     components: {Content, Table},
     props:['sensor', 'logdata'],
+    computed: {
+      returnFireStatus: function(){
+        return [{
+          icon: "mdi-thermometer",
+          title: "온도",
+          content: this.sensor.tmp+" °C"
+        },
+        {
+          icon: "mdi-arrow-collapse-vertical",
+          title: "압력",
+          content: this.sensor.pres+" bar"
+        },
+        {
+          icon: "mdi-heating-coil",
+          title: "히터",
+          content: this.sensor.heat==='0'?"OFF":"ON"
+        },
+        {
+          icon: "mdi-car",
+          title: "차량 감지",
+          content: "NO"
+        }]
+      }
+    },
     mounted(){
     
       this.map = new google.maps.Map(document.getElementById("map"), { //getElementById로 map id 속성의 요소를 가져온다.
