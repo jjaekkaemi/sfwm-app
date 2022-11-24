@@ -6,7 +6,7 @@ const { createDatabase, checkDB, insertFireCode,insertLog, insertData } = requir
 const {connectIO} =require("./socket.js")
 var indexRouter = require('./routes/index');
 const { stringify } = require('querystring');
-
+const fs = require('fs')
 var app = express();
 
 app.use(logger('dev'));
@@ -21,6 +21,10 @@ createDatabase("database.db")
 // console.log(insertData(1, "324", new Date(), 1))
 app.use('/', indexRouter);
 connectIO(app)
+// fs.readFile("../1613975496.jpg", (err, data)=> {
+//                 if(!err) {
+//                     console.log(Buffer.from(data).toString('base64'))
+//                 }})
 // let websocket = new WebSocket("192.168.0.34:8080")
 // websocket.onopen(() => {
 //     console.log("open")

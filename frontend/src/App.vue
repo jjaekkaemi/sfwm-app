@@ -59,7 +59,7 @@
           Alert
         </v-card-title> -->
         <v-img 
-          src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+          :src="img_data"
           height="300px">
 
         </v-img>
@@ -111,15 +111,14 @@ export default {
         type:"불법 주·정차가 감지되었습니다."
       }
       ],
+      img_data:"https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
     
   }),
   async mounted(){
-      let socket = io('211.34.247.114:8081',{transports: ["websocket"]})
-      // let result = await this.$http.get("log")
-      // this.logdata = result.data
-      // for(let l of result.data){
-      //   this.logdata.push({id: l.id, datetime: l.datetime, type: "불법 주·정차가 감지되었습니다.", value: l.value})
-      // }
+      let socket = io('localhost:8081',{transports: ["websocket"]})
+      let result = await this.$http.get("log")
+      console.log(result)
+      this.logdata = result.data
       socket.on("msg", (data)=>{
         console.log("msg!!!", data)
       })
@@ -152,7 +151,7 @@ export default {
       console.log(result)
     },
     onAlert(id){
-      console.log(id)
+      this.img_data = `data:image/jpg;base64,${id}`
       this.alert_dialog = true
     }
   }

@@ -37,7 +37,7 @@ wss.on("connection", ws => {
                         
                 console.log("경보", result.data)
                 if(result.data!=null){
-                    let insertdata = {data_type:3, value:result.data, datetime: new Date, code_id: 1}
+                    let insertdata = {data_type:3, value:result.data, datetime: getDatetime(), code_id: 1}
                     insertData(insertdata);
                                 
                     let id = await selectDataCount()
@@ -56,8 +56,9 @@ wss.on("connection", ws => {
     })
 })
 async function checkSensorData(jsondata){
+    
     for (j in jsondata){
-        let logdata = {data_type: DATA_TYPE[j].id, value:jsondata[j], datetime: new Date, code_id: 1,}
+        let logdata = {data_type: DATA_TYPE[j].id, value:jsondata[j], datetime: getDatetime(), code_id: 1,}
         insertData(logdata);
         // let id = await selectDataCount()
         // if(DATA_TYPE[j].id<2) await logCheck(j, jsondata, id[0].count, logdata)
@@ -78,5 +79,9 @@ function sendWS(data){
 }
 function getWS(){
     return client_ws
+}
+function getDatetime(){
+    const date = new Date()
+    return`${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()<10?'0'+date.getSeconds():date.getSeconds()}`
 }
 module.exports = {client_ws, returnData, sendWS, getWS}

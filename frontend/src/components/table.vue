@@ -28,7 +28,7 @@
                     <div>불법 주·정차가 감지되었습니다.</div>
                 </v-list-item-icon>
                 <v-list-item-icon class="mr-10 list-item ">
-                    <v-btn class="black white--text" @click="onAlert(item.id)">보기</v-btn>
+                    <v-btn class="black white--text" @click="onAlert(item.value)">보기</v-btn>
                 </v-list-item-icon>
             </v-list-item>
 
