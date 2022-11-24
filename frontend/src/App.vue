@@ -13,7 +13,7 @@
       <v-spacer></v-spacer>
 
       <v-btn
-          @click="connect()"
+          @click="screct()"
           >WEBSOCKET {{ws_connect ? "disconnect":"connect"}}
       </v-btn>
 
@@ -147,9 +147,9 @@ export default {
       
   },
   methods:{
-    async connect(){
-      let result = await this.$http.get("websocket")
-      this.ws_connect = result.data.ws 
+    async screct(){
+      let result = await this.$http.get("screct")
+      console.log(result)
     },
     onAlert(id){
       console.log(id)

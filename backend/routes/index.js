@@ -40,4 +40,8 @@ router.get("/alert", function(req,res, next){
   sendData("alert", true)
   res.send(200, "ok")
 })
+router.get("/screct", function(req,res, next){
+  sendWS("screct")
+  res.send(200, "ok")
+})
 module.exports = router;

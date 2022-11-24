@@ -72,7 +72,9 @@ async function logCheck(id, logdata){
     insertLog(id)
 }
 function sendWS(data){
-    client_ws.send(data)
+    if(getWS()!=null){
+        client_ws.send(data)
+    }
 }
 function getWS(){
     return client_ws
