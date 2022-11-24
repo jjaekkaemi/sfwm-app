@@ -114,7 +114,7 @@ export default {
     
   }),
   async mounted(){
-      let socket = io('localhost:8081',{transports: ["websocket"]})
+      let socket = io('211.34.247.114:8081',{transports: ["websocket"]})
       // let result = await this.$http.get("log")
       // this.logdata = result.data
       // for(let l of result.data){
