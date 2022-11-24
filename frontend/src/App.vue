@@ -22,33 +22,64 @@
     <v-main style="background:#EDEDED;">
       <v-dialog
       v-model="dialog"
-      width="500"
+      max-width="400"
       
     >
-      <v-card>
-        <v-card-title class="text-h5 red lighten-2">
+      <v-card class="text-center">
+        <!-- <v-card-title class="text-h5 red lighten-2">
           Alert
-        </v-card-title>
-
-        <v-card-text v-text="dialog_content">
+        </v-card-title> -->
+        <v-card-text height="100"/>
+        <v-img src="./assets/alert.svg" width="70" class="mx-auto"></v-img>
+        <v-card-text height="100"/>
+        <v-card-text class="text-center subtitle-1" v-text="dialog_content">
           
         </v-card-text>
-
-        <v-divider></v-divider>
 
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            color="primary"
-            text
+            depressed
+            color="black"
+            class="white--text"
             @click="dialog = false"
           >
-            I accept
+            확인
           </v-btn>
+          <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
     </v-dialog>
-      <HelloWorld :sensor="sensor" :logdata="logdata"/>
+    <v-dialog
+      v-model="alert_dialog"
+      max-width="500"
+      
+    >
+      <v-card class="text-center">
+        <!-- <v-card-title class="text-h5 red lighten-2">
+          Alert
+        </v-card-title> -->
+        <v-img 
+          src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+          height="300px">
+
+        </v-img>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            depressed
+            color="black"
+            class="white--text"
+            @click="alert_dialog = false"
+          >
+            확인
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+      <HelloWorld :sensor="sensor" :logdata="logdata" :detect="car_detect" @onalert="onAlert"/>
     </v-main>
   </v-app>
 </template>
@@ -67,25 +98,29 @@ export default {
       sensor:{
         tmp:0,
         pres:0,
-        heat:'0'
+        heat:0
 
       },
+      alert_dialog:true,
       dialog:false,
-      dialog_content:"",
+      car_detect: false,
+      dialog_content:"불법 주ㆍ정차가 감지되었습니다.",
       ws_connect:false,
       logdata: [{
         id: 1,
         datetime:"2022-10-04 11:09:01",
         type:"불법 주·정차가 감지되었습니다."
       }
-        ],
+      ],
     
   }),
   async mounted(){
-      let result = await this.$http.get("socket")
-      let socket = io(`localhost:${result.data.port}`,{transports: ["websocket"]})
-      result = await this.$http.get("log")
-      this.logdata = result.data
+      let socket = io('localhost:8081',{transports: ["websocket"]})
+      // let result = await this.$http.get("log")
+      // this.logdata = result.data
+      // for(let l of result.data){
+      //   this.logdata.push({id: l.id, datetime: l.datetime, type: "불법 주·정차가 감지되었습니다.", value: l.value})
+      // }
       socket.on("msg", (data)=>{
         console.log("msg!!!", data)
       })
@@ -94,13 +129,21 @@ export default {
         console.log("data!", data)
       })
       socket.on("alert", (data)=>{
+        
+        this.dialog_content = "불법 주·정차가 감지되었습니다."
         this.dialog = true
-        this.dialog_content = "불법 차량이 감지되었습니다."
-        this.logdata.push(data)
+        this.logdata.push({id: data.id, datetime: data.datetime, type: "불법 주·정차가 감지되었습니다.", value: data.value})
       })
       socket.on("ws_connect", (data)=>{
         this.ws_connect = data
         console.log("data!", data)
+      })
+      socket.on("detect", (data)=>{
+        console.log("detect",data)
+        if(data==null) {
+          this.dialog = false
+          this.car_detect = false
+        }
       })
       
   },
@@ -108,6 +151,10 @@ export default {
     async connect(){
       let result = await this.$http.get("websocket")
       this.ws_connect = result.data.ws 
+    },
+    onAlert(id){
+      console.log(id)
+      this.alert_dialog = true
     }
   }
 };

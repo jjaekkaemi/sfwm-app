@@ -2,8 +2,10 @@ const {WebSocket} = require('ws');
 let sensor_data = ""
 let ws = null;
 let dataInterval = null
+let address = null
 const {sendData} = require("./socket.js")
 const {insertData, insertLog, selectLogCount, selectDataCount} = require('./database.js')
+const fs = require("fs")
 const DATA_TYPE = {
     tmp:{
         id:0,
@@ -17,19 +19,23 @@ const DATA_TYPE = {
         id:2
     }
 }
+fs.readFile("../config.json", (err, data)=>{
+    address = JSON.parse(data.toString())
+})
 function returnData(){
     return sensor_data
 }
-async function connectWS(){
+async function connectWS(a){
     // let result2 = {tmp:100, pres:300, heat:'0' }
     // sendData("data",result2)
     // await checkSensorData(result2)
+    address = a
     if(ws!=null){
         disconnectWS()
     }
     else{
         try{
-            ws = new WebSocket('ws://192.168.0.197:3001');
+            ws = new WebSocket(`ws://${address.ADD}:3001`);
             ws.on('open', function open() {
                 console.log("open")
                 // ws.send("get")
@@ -49,10 +55,15 @@ async function connectWS(){
                     case 1:
                         
                         console.log("경보", result.data)
-                        let insertdata = {data_type:3, value:result.data, datetime: new Date, code_id: 1}
-                        insertData(insertdata);
-                        let id = await selectDataCount()
-                        await logCheck(id[0].count, insertdata)
+                        if(result.data!=null){
+                            let insertdata = {data_type:3, value:result.data, datetime: new Date, code_id: 1}
+                            insertData(insertdata);
+                                
+                            let id = await selectDataCount()
+                            await logCheck(id[0].count, insertdata)
+                        }
+                        sendData("detect",result.data)
+                        
 
                         break
                 }

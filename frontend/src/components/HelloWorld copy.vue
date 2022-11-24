@@ -45,7 +45,7 @@
                 <v-row>
                   <v-col style="display: flex; align-items: center; justify-content: center">
                    <v-icon x-large>
-                    {{sensor.heat==='0'?'mdi-radiator-off':'mdi-radiator'}}
+                    {{sensor.heat===0?'mdi-radiator-off':'mdi-radiator'}}
                   </v-icon>
                   </v-col>
                 </v-row>

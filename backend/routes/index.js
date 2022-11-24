@@ -4,6 +4,10 @@ const {connectIO} = require("../socket.js")
 const {returnData, connectWS, sendWS, getWS} = require("../websocket.js")
 const {selectLog, insertData, insertLog, writeLog} = require("../database.js")
 const {sendData} = require("../socket.js")
+let address = null
+for(i = 2 ; i<process.argv.length ; i+=2){
+    address = Number(process.argv[i]);
+}
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -13,7 +17,7 @@ router.get('/socket', function(req,res, next){
 })
 router.get('/websocket', function(req,res, next){
   let result = null
-  result = connectWS()
+  result = connectWS(address)
   res.json({ws:result!=null?true:false})
 })
 router.post('/data', function(req, res, next){

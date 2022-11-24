@@ -39,20 +39,20 @@
         <v-card>
           <v-card-title >로그</v-card-title>
           <v-divider width="95%" class="ml-4 font-weight-medium mt-n3"/>
-          <Table :loglist="logdata" />
+          <Table :loglist="logdata" @onalert="onAlert"/>
         </v-card>
       </v-col>
     </v-row>
   </v-container>
 </template>
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4Ab3x39_veJPXrcq6KJ-uSCP5TzO3Ef0"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4Ab3x39_veJPXrcq6KJ-uSCP5TzO3Ef0"></script>
 <script>
 import Content from "./content.vue"
 import Table from "./table.vue"
   export default {
     name: 'HelloWorld',
     components: {Content, Table},
-    props:['sensor', 'logdata'],
+    props:['sensor', 'logdata', 'detect'],
     computed: {
       returnFireStatus: function(){
         return [{
@@ -68,12 +68,12 @@ import Table from "./table.vue"
         {
           icon: "mdi-heating-coil",
           title: "히터",
-          content: this.sensor.heat==='0'?"OFF":"ON"
+          content: this.sensor.heat===0?"OFF":"ON"
         },
         {
           icon: "mdi-car",
           title: "차량 감지",
-          content: "NO"
+          content: this.detect ? "YES":"NO"
         }]
       }
     },
@@ -107,6 +107,9 @@ import Table from "./table.vue"
       });
       return markers
     },
+    onAlert(id){
+      this.$emit('onalert', id)
+    }
     },
     data: (vm) => ({
       map:null,
@@ -181,7 +184,7 @@ import Table from "./table.vue"
         {
           icon: "mdi-heating-coil",
           title: "히터",
-          content: vm.sensor.heat==='0'?"OFF":"ON"
+          content: vm.sensor.heat===0?"OFF":"ON"
         },
         {
           icon: "mdi-car",
