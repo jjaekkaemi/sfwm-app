@@ -1,5 +1,5 @@
 const {WebSocketServer} = require('ws')
-const wss = new WebSocketServer({port: 8082})
+const wss = new WebSocketServer({port: 8083})
 const {sendData} = require("./socket.js")
 const {insertData, insertLog, selectLogCount, selectDataCount} = require('./database.js')
 
