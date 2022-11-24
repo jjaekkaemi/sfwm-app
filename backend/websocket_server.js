@@ -27,6 +27,7 @@ wss.on("connection", ws => {
     client_ws = ws
     client_ws.on("message", async function message(data) {
         let result = JSON.parse(data.toString(`utf-8`))
+        console.log("[WSS] message : ", result)
         switch(result.type){
             case 0 :
                 sensor_data = result.data
