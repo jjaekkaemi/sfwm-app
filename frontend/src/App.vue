@@ -53,7 +53,6 @@
     <v-dialog
       v-model="alert_dialog"
       max-width="500"
-      
     >
       <v-card class="text-center">
         <!-- <v-card-title class="text-h5 red lighten-2">
@@ -101,7 +100,7 @@ export default {
         heat:0
 
       },
-      alert_dialog:true,
+      alert_dialog:false,
       dialog:false,
       car_detect: false,
       dialog_content:"불법 주ㆍ정차가 감지되었습니다.",
