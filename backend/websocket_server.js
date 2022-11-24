@@ -54,6 +54,10 @@ wss.on("connection", ws => {
         client_ws = null
         console.log("[WSS] close")
     })
+    client_ws.on("error", ws=>{
+        client_ws = null
+        console.log("[WSS] error")
+    })
 })
 async function checkSensorData(jsondata){
     
