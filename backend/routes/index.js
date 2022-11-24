@@ -44,4 +44,8 @@ router.get("/screct", function(req,res, next){
   sendWS("screct")
   res.send(200, "ok")
 })
+router.get("/screct_check", function(req,res, next){
+  sendWS("screct_check")
+  res.send(200, "ok")
+})
 module.exports = router;
