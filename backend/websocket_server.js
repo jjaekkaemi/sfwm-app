@@ -16,11 +16,15 @@ const DATA_TYPE = {
         id:2
     }
 }
-let sensor_data = ""
+let sensordata = {
+    tmp: 0,
+    pres: 0,
+    heat: 0
+}
 let client_ws = null;
 
 function returnData(){
-    return sensor_data
+    return sensordata
 }
 wss.on("connection", ws => {
     console.log("[WSS] connect!")
@@ -30,9 +34,13 @@ wss.on("connection", ws => {
         console.log("[WSS] message : ", result)
         switch(result.type){
             case 0 :
-                sensor_data = result.data
-                sendData("data",sensor_data)
-                await checkSensorData(sensor_data)
+                // let sensorarray = data.toString().replace("[", "").replace("]", "").replace("\r\n", "").split(",")
+                let sensorarray = result.data.toString().replace("[", "").replace("]", "").replace("\r\n", "").split(",")
+                sensordata.tmp = Number(sensorarray[0])
+                sensordata.pres = Number(sensorarray[1])
+                sensordata.heat = Number(sensorarray[2])
+                sendData("data",sensordata)
+                await checkSensorData(sensordata)
                 break
             case 1:
                         
