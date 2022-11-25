@@ -79,7 +79,7 @@ async function selectLogCount(){
 async function selectLog(){
     return new Promise(function (resolve, reject) {
         db.all(
-        "SELECT rowid AS id, data FROM log",
+        "SELECT rowid AS id, value, datetime FROM log",
         function (err, rows) {
             if (err) {
                 return reject(err);
