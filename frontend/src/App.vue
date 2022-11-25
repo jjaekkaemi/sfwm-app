@@ -130,6 +130,7 @@ export default {
         
         this.dialog_content = "불법 주·정차가 감지되었습니다."
         this.dialog = true
+        this.car_detect = false
         this.logdata.push({id: data.id, datetime: data.datetime, type: "불법 주·정차가 감지되었습니다.", value: data.value})
       })
       socket.on("ws_connect", (data)=>{

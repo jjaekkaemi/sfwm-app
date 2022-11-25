@@ -53,6 +53,12 @@ import Table from "./table.vue"
     name: 'HelloWorld',
     components: {Content, Table},
     props:['sensor', 'logdata', 'detect'],
+    watch: {
+    detect: function() {
+        if (detect) marker1.setIcon({url:require('../assets/mdi_fire-hydrant-alert.svg')})
+        else marker1.setIcon({url:require('../assets/mdi_fire-hydrant.svg')})
+    }
+  },
     computed: {
       returnFireStatus: function(){
         return [{
@@ -94,9 +100,6 @@ import Table from "./table.vue"
       this.setMarker(this.fire_hydrant2, require('../assets/mdi_fire-hydrant.svg'))
       this.setMarker(this.fire_hydrant3, require('../assets/mdi_fire-hydrant.svg'))
       this.setMarker(this.fire_hydrant4, require('../assets/mdi_fire-hydrant.svg'))
-      setTimeout(()=>{
-        marker1.setIcon({url:require('../assets/mdi_fire-hydrant-alert.svg')})
-      },10000)
     },
     methods:{
       setMarker(Points, icon) {//지도에 마커를 찍는 함수.
