@@ -36,6 +36,7 @@ wss.on("connection", ws => {
             case 0 :
                 // let sensorarray = data.toString().replace("[", "").replace("]", "").replace("\r\n", "").split(",")
                 let sensorarray = result.data.toString().replace("[", "").replace("]", "").replace("\r\n", "").split(",")
+                console.log(sensorarray)
                 sensordata.tmp = Number(sensorarray[0])
                 sensordata.pres = Number(sensorarray[1])
                 sensordata.heat = Number(sensorarray[2])
