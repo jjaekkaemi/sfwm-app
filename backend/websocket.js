@@ -58,17 +58,13 @@ async function connectWS(a){
                         if(result.data!=null){
                             let insertdata = {data_type:3, value:result.data, datetime: new Date, code_id: 1}
                             insertData(insertdata);
-                                
-                            let id = await selectDataCount()
-                            await logCheck(id[0].count, insertdata)
+    
+                            insertLog(result.data,new Date)
                         }
                         sendData("detect",result.data)
-                        
-
                         break
                 }
-                
-                
+
             });
             ws.on('close', function close() {
                 console.log("close")
@@ -110,12 +106,8 @@ function disconnectWS(){
 //         insertLog(id)
 //     }
 // }
-async function logCheck(id, logdata){
-    let result = await selectLogCount()
-    let alertdata = logdata
-    alertdata.id = result[0].count+1
-    sendData("alert", alertdata)
-    insertLog(id)
+async function logCheck(value,datetime){
+    insertLog(value,datetime)
 }
 function sendWS(data){
     ws.send(data)

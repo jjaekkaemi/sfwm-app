@@ -15,7 +15,7 @@ function createDatabase(file) {
         let query = [];
         query.push("CREATE TABLE `fire_hydrant_code` ( `id` INTEGER primary key AUTOINCREMENT, 'code' TEXT, `address` TEXT )")
         query.push("CREATE TABLE `data` ( `id` INTEGER primary key AUTOINCREMENT, 'data_type' INTEGER, 'value' TEXT, `datetime` TEXT, `code` INTEGER, FOREIGN KEY ('code') REFERENCES 'fire_hydrant_code' ('id') )")
-        query.push("CREATE TABLE `log` ( `id` INTEGER primary key AUTOINCREMENT, 'data' INTEGER, FOREIGN KEY ('data') REFERENCES 'data' ('id') )")
+        query.push("CREATE TABLE `log` ( `id` INTEGER primary key AUTOINCREMENT, 'value' TEXT, `datetime` TEXT")
         db.serialize(function () {
             for(q of query){
                 db.run(q)
@@ -53,9 +53,9 @@ async function selectDataCount(){
         );
   });
 }
-function insertLog(data_id){
+function insertLog(value,datetime){
     db.run(
-        `INSERT INTO log(data) VALUES (${data_id})`,
+        `INSERT INTO log(value, datetime) VALUES (${value}, ${datetime})`,
         function (createResult) {
             if (createResult) throw createResult;
         }
@@ -94,17 +94,8 @@ async function selectLog(){
 async function writeLog(){
     let result_arr = []
     let logjson = await selectLog()
-    for(l of logjson){
-        let result = await selectDataFromLog(l.data);
-        result_arr.push({
-            id:l.id,
-            data_type: result[0].data_type,
-            value: result[0].value,
-            datetime: result[0].datetime
-        })
-    }
-    console.log(result_arr)
-    return result_arr
+    console.log(logjson)
+    return logjson
 }
 async function selectDataFromLog(id){
     return new Promise(function (resolve, reject) {
