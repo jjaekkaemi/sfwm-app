@@ -15,7 +15,7 @@ function createDatabase(file) {
         let query = [];
         query.push("CREATE TABLE `fire_hydrant_code` ( `id` INTEGER primary key AUTOINCREMENT, 'code' TEXT, `address` TEXT )")
         query.push("CREATE TABLE `data` ( `id` INTEGER primary key AUTOINCREMENT, 'data_type' INTEGER, 'value' TEXT, `datetime` TEXT, `code` INTEGER, FOREIGN KEY ('code') REFERENCES 'fire_hydrant_code' ('id') )")
-        query.push("CREATE TABLE `log` ( `id` INTEGER primary key AUTOINCREMENT, 'value' TEXT, `datetime` TEXT")
+        query.push("CREATE TABLE `log` ( `id` INTEGER primary key AUTOINCREMENT, 'data' INTEGER, FOREIGN KEY ('data') REFERENCES 'data' ('id') )")
         db.serialize(function () {
             for(q of query){
                 db.run(q)
@@ -53,9 +53,9 @@ async function selectDataCount(){
         );
   });
 }
-function insertLog(value,datetime){
+function insertLog(data_id){
     db.run(
-        `INSERT INTO log(value, datetime) VALUES (${value}, ${datetime})`,
+        `INSERT INTO log(data) VALUES (${data_id})`,
         function (createResult) {
             if (createResult) throw createResult;
         }
@@ -79,7 +79,7 @@ async function selectLogCount(){
 async function selectLog(){
     return new Promise(function (resolve, reject) {
         db.all(
-        "SELECT rowid AS id, value, datetime FROM log",
+        "SELECT rowid AS id, data FROM log",
         function (err, rows) {
             if (err) {
                 return reject(err);
@@ -94,8 +94,17 @@ async function selectLog(){
 async function writeLog(){
     let result_arr = []
     let logjson = await selectLog()
-    console.log(logjson)
-    return logjson
+    for(l of logjson){
+        let result = await selectDataFromLog(l.data);
+        result_arr.push({
+            id:l.id,
+            data_type: result[0].data_type,
+            value: result[0].value,
+            datetime: result[0].datetime
+        })
+    }
+    console.log(result_arr)
+    return result_arr
 }
 async function selectDataFromLog(id){
     return new Promise(function (resolve, reject) {

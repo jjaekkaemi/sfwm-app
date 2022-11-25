@@ -36,15 +36,18 @@ wss.on("connection", ws => {
                 break
             case 1:
                         
-                        console.log("경보", result.data)
-                        if(result.data!=null){
-                            let insertdata = {data_type:3, value:result.data, datetime: new Date, code_id: 1}
-                            insertData(insertdata);
-    
-                            insertLog(result.data,new Date)
-                        }
-                        sendData("detect",result.data)
-                        break
+                console.log("경보", result.data)
+                if(result.data!=null){
+                    let insertdata = {data_type:3, value:result.data, datetime: getDatetime(), code_id: 1}
+                    insertData(insertdata);
+                                
+                    let id = await selectDataCount()
+                    await logCheck(id[0].count, insertdata)
+                }
+                sendData("detect",result.data)
+                        
+
+                break
             }
     })
     client_ws.on("close", ws=>{
