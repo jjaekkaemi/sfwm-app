@@ -54,10 +54,7 @@ import Table from "./table.vue"
     components: {Content, Table},
     props:['sensor', 'logdata', 'detect'],
     watch: {
-    detect: function() {
-        if (detect) marker1.setIcon({url:require('../assets/mdi_fire-hydrant-alert.svg')})
-        else marker1.setIcon({url:require('../assets/mdi_fire-hydrant.svg')})
-    }
+    'detect':'changeMarker'
   },
     computed: {
       returnFireStatus: function(){
@@ -95,13 +92,17 @@ import Table from "./table.vue"
         fuulscreenControl: true,
         zoomControl: true,
       });
-      const marker1 = this.setMarker(this.fire_hydrant, require('../assets/mdi_fire-hydrant.svg'))
+      this.marker1 = this.setMarker(this.fire_hydrant, require('../assets/mdi_fire-hydrant.svg'))
       this.setMarker(this.fire_hydrant1, require('../assets/mdi_fire-hydrant.svg'))
       this.setMarker(this.fire_hydrant2, require('../assets/mdi_fire-hydrant.svg'))
       this.setMarker(this.fire_hydrant3, require('../assets/mdi_fire-hydrant.svg'))
       this.setMarker(this.fire_hydrant4, require('../assets/mdi_fire-hydrant.svg'))
     },
     methods:{
+      changeMarker(){
+        if (this.detect) this.marker1.setIcon({url:require('../assets/mdi_fire-hydrant-alert.svg')})
+        else this.marker1.setIcon({url:require('../assets/mdi_fire-hydrant.svg')})
+      },
       setMarker(Points, icon) {//지도에 마커를 찍는 함수.
       const markers = new google.maps.Marker({
         position: Points,
@@ -115,6 +116,7 @@ import Table from "./table.vue"
     }
     },
     data: (vm) => ({
+      marker1:null,
       map:null,
       mapCenter: { lat: 36.103487, lng: 128.384989 },
       fire_hydrant:{ //창보
