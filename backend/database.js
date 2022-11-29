@@ -2,12 +2,6 @@ const sqlite3 = require("sqlite3").verbose();
 const { json } = require("body-parser");
 const fs = require("fs");
 let db = null
-const DATA_TYPE ={
-    "tmp":0,
-    "pres":1,
-    "heat":2,
-    "detect":3
-}
 function createDatabase(file) {
     db = new sqlite3.Database(file);
     if (!fs.existsSync(file)) {

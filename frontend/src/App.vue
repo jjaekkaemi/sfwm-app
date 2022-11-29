@@ -7,11 +7,9 @@
     >
       <div class="d-flex align-center" style="font-size:36px">
         DASHBOARD
-
       </div>
 
       <v-spacer></v-spacer>
-
       <v-btn
           @click="screct()"
           >WEBSOCKET {{ws_connect ? "disconnect":"connect"}}
@@ -23,7 +21,6 @@
       <v-dialog
       v-model="dialog"
       max-width="400"
-      
     >
       <v-card class="text-center">
         <!-- <v-card-title class="text-h5 red lighten-2">
@@ -130,7 +127,7 @@ export default {
         
         this.dialog_content = "불법 주·정차가 감지되었습니다."
         this.dialog = true
-        this.car_detect = false
+        this.car_detect = true
         this.logdata.push({id: data.id, datetime: data.datetime, type: "불법 주·정차가 감지되었습니다.", value: data.value})
       })
       socket.on("ws_connect", (data)=>{

@@ -19,22 +19,18 @@ router.get('/socket', function(req,res, next){
 router.post('/data', function(req, res, next){
   if(req.body){
     if(getWS()!=null){
-      sendWS(cmd);
-      setTimeout(()=> {
-        res.json(returnData())
-      },500)
+      res.json(200, returnData())
     }
-    res.send(200, "WebSocket Disconnect")
+    else{
+      res.send(200, "WebSocket Disconnect")
+    }
+    
   }
   else res.send(200, "No Parameter")
 })
 
 router.get("/log", async function(req, res, next){
-  
   res.json(await writeLog());
-  // console.log()
-  // insertLog(await insertData(1, "324", new Date(), 1))
-  // res.json({ok:"Ok"})
 })
 router.get("/alert", function(req,res, next){
   sendData("alert", true)
