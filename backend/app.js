@@ -20,6 +20,7 @@ createDatabase("database.db")
 // insertLog(insertData(1, "324", new Date(), 1))
 // console.log(insertData(1, "324", new Date(), 1))
 app.use('/', indexRouter);
+writeLog()
 connectIO(app)
 // fs.readFile("../1613975496.jpg", (err, data)=> {
 //                 if(!err) {

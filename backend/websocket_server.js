@@ -40,7 +40,14 @@ wss.on("connection", ws => {
                 sensordata.tmp = Number(sensorarray[0])
                 sensordata.pres = Number(sensorarray[1])
                 sensordata.heat = Number(sensorarray[2])
-                sendData("data",sensordata)
+                let detect_result = null
+                if(Number(sensorarray[3])==1){
+                    detect_result = true
+                    sendData("detect",detect_result)
+                }
+                else{
+                    sendData("detect",detect_result)
+                }
                 await checkSensorData(sensordata)
                 break
             case 1:
