@@ -29,7 +29,7 @@
         <v-card>
           <v-card-title >소화전 위치도</v-card-title>
           <v-divider width="95%" class="ml-4 font-weight-medium mt-n3"/>
-          <v-card-text class="mt-2 text-center" style="height:64vh" id="map" >
+          <v-card-text class="mt-2 text-center" style="height:55vh" id="map" >
           </v-card-text>
         </v-card>
       </v-col>
