@@ -48,6 +48,7 @@ wss.on("connection", ws => {
                 else{
                     sendData("detect",detect_result)
                 }
+                sendData("data",sensordata)
                 await checkSensorData(sensordata)
                 break
             case 1:

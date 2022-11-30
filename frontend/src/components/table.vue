@@ -18,7 +18,7 @@
         <v-list v-for="(item,idx) in loglist" :key="idx">
             <v-list-item>
                 <v-list-item-icon class="ml-5 list-item">
-                    <div>{{idx}}</div>
+                    <div>{{idx+1}}</div>
                 </v-list-item-icon>
 
                 <v-list-item-content class="ml-5 list-item">

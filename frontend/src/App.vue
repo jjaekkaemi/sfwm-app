@@ -20,16 +20,16 @@
     <v-main style="background:#EDEDED;">
       <v-dialog
       v-model="dialog"
-      max-width="400"
+      max-width="500"
     >
       <v-card class="text-center">
         <!-- <v-card-title class="text-h5 red lighten-2">
           Alert
         </v-card-title> -->
-        <v-card-text height="100"/>
-        <v-img src="./assets/alert.svg" width="70" class="mx-auto"></v-img>
-        <v-card-text height="100"/>
-        <v-card-text class="text-center subtitle-1" v-text="dialog_content">
+        <v-card-text height="200"/>
+        <v-img src="./assets/alert.svg" width="100" class="mx-auto"></v-img>
+        <v-card-text height="200"/>
+        <v-card-text class="text-center title" v-text="dialog_content">
           
         </v-card-text>
 
@@ -38,7 +38,7 @@
           <v-btn
             depressed
             color="black"
-            class="white--text"
+            class="white--text subtitle-1"
             @click="dialog = false"
           >
             확인
@@ -49,7 +49,7 @@
     </v-dialog>
     <v-dialog
       v-model="alert_dialog"
-      max-width="500"
+      max-width="600"
     >
       <v-card class="text-center">
         <!-- <v-card-title class="text-h5 red lighten-2">
