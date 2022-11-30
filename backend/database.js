@@ -78,7 +78,6 @@ async function selectLog(){
             if (err) {
                 return reject(err);
             }
-            console.log(rows)
             resolve(rows);
         }
         );
@@ -113,6 +112,14 @@ async function selectDataFromLog(id){
         );
   });
 }
+function deleteLog(){
+    for(let i = 1 ; i<22 ; i++){
+        // db.run(`DELETE FROM log WHERE id = ${i}`, function(createResult){
+        //     if (createResult) throw createResult;
+        // })
+        console.log(i)
+    }
+}
 function checkDB(){
     db.run(
         `INSERT INTO fire_hydrant_code(code, address) VALUES ('232_1', '경상북도 구미시')`,
@@ -137,4 +144,4 @@ function checkDB(){
         });
     });
 }
-module.exports = {createDatabase, checkDB, insertFireCode, insertData, insertLog,selectLog,writeLog, selectLogCount, selectDataCount, writeLog};
+module.exports = {createDatabase, checkDB, insertFireCode, insertData, insertLog,selectLog,writeLog, selectLogCount, selectDataCount, deleteLog};

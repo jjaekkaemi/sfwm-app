@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const { createDatabase, checkDB, insertFireCode,insertLog, insertData, writeLog } = require("./database.js");
+const { createDatabase, deleteLog, writeLog } = require("./database.js");
 const {connectIO, } =require("./socket.js")
 var indexRouter = require('./routes/index');
 const { stringify } = require('querystring');
@@ -20,7 +20,7 @@ createDatabase("database.db")
 // insertLog(insertData(1, "324", new Date(), 1))
 // console.log(insertData(1, "324", new Date(), 1))
 app.use('/', indexRouter);
-writeLog()
+deleteLog()
 connectIO(app)
 // fs.readFile("../1613975496.jpg", (err, data)=> {
 //                 if(!err) {
