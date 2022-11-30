@@ -114,9 +114,9 @@ async function selectDataFromLog(id){
 }
 function deleteLog(){
     for(let i = 1 ; i<22 ; i++){
-        // db.run(`DELETE FROM log WHERE id = ${i}`, function(createResult){
-        //     if (createResult) throw createResult;
-        // })
+        db.run(`DELETE FROM log WHERE id = ${i}`, function(createResult){
+            if (createResult) throw createResult;
+        })
         console.log(i)
     }
 }
