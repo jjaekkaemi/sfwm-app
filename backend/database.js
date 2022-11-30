@@ -88,6 +88,7 @@ async function selectLog(){
 async function writeLog(){
     let result_arr = []
     let logjson = await selectLog()
+    console.log(logjson)
     for(l of logjson){
         let result = await selectDataFromLog(l.data);
         result_arr.push({
@@ -97,7 +98,6 @@ async function writeLog(){
             datetime: result[0].datetime
         })
     }
-    console.log(result_arr)
     return result_arr
 }
 async function selectDataFromLog(id){
