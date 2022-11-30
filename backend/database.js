@@ -137,4 +137,4 @@ function checkDB(){
         });
     });
 }
-module.exports = {createDatabase, checkDB, insertFireCode, insertData, insertLog,selectLog,writeLog, selectLogCount, selectDataCount};
+module.exports = {createDatabase, checkDB, insertFireCode, insertData, insertLog,selectLog,writeLog, selectLogCount, selectDataCount, writeLog};
