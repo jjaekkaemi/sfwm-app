@@ -11,7 +11,6 @@
 
       <v-spacer></v-spacer>
       <v-btn
-          @click="screct()"
           >WEBSOCKET {{ws_connect ? "disconnect":"connect"}}
       </v-btn>
 
