@@ -113,7 +113,6 @@ import HelloWorld from './components/HelloWorld';
 import io from "socket.io-client"
 export default {
   name: 'App',
-
   components: {
     HelloWorld,
   },
@@ -151,6 +150,7 @@ export default {
       })
       socket.on("data", (data)=>{
         this.sensor = data
+        this.sensor.tmp = this.sensor.tmp-4
         if(this.sensor.tmp<=3){
           if(!this.tmp_dialog && this.tmp_dialog_flag==0) this.tmp_dialog=true
         }
@@ -158,7 +158,6 @@ export default {
           this.tmp_dialog = false
           this.tmp_dialog_flag = 0
         }
-  
       })
       socket.on("alert", (data)=>{
         
