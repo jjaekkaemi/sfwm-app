@@ -71,7 +71,7 @@ import Table from "./table.vue"
         {
           icon: "mdi-heating-coil",
           title: "히터",
-          content: this.sensor.heat===0?"OFF":"ON"
+          content: this.sensor.tmp>3?"OFF":"ON"
         },
         {
           icon: "mdi-car",

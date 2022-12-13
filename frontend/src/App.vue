@@ -47,6 +47,35 @@
       </v-card>
     </v-dialog>
     <v-dialog
+      v-model="tmp_dialog"
+      max-width="500"
+    >
+      <v-card class="text-center">
+        <!-- <v-card-title class="text-h5 red lighten-2">
+          Alert
+        </v-card-title> -->
+        <v-card-text height="200"/>
+        <v-img src="./assets/alert.svg" width="100" class="mx-auto"></v-img>
+        <v-card-text height="200"/>
+        <v-card-text class="text-center title" v-text="tmp_dialog_content">
+          
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            depressed
+            color="black"
+            class="white--text subtitle-1"
+            @click="tmp_dialog = false"
+          >
+            확인
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog
       v-model="alert_dialog"
       max-width="600"
     >
@@ -94,12 +123,13 @@ export default {
         tmp:0,
         pres:0,
         heat:0
-
       },
+      tmp_dialog:false,
       alert_dialog:false,
       dialog:false,
       car_detect: false,
       dialog_content:"불법 주ㆍ정차가 감지되었습니다.",
+      tmp_dialog_content:"온도가 낮아져 동파 위험이 있으니 히터를 가동합니다.",
       ws_connect:false,
       logdata: [{
         id: 1,
@@ -120,7 +150,13 @@ export default {
       })
       socket.on("data", (data)=>{
         this.sensor = data
-        console.log("data!", data)
+        if(this.sensor.tmp>3){
+          if(!this.tmp_dialog) this.tmp_dialog=true
+        }
+        else{
+          this.tmp_dialog = false
+        }
+  
       })
       socket.on("alert", (data)=>{
         
