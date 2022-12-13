@@ -123,6 +123,7 @@ export default {
         pres:0,
         heat:0
       },
+      count:0,
       tmp_dialog:false,
       alert_dialog:false,
       dialog:false,
@@ -150,7 +151,14 @@ export default {
       })
       socket.on("data", (data)=>{
         this.sensor = data
-        this.sensor.tmp = this.sensor.tmp-4
+        this.count+= 1
+        if(this.count>10){
+          this.sensor.tmp = 3
+        }
+        else{
+          this.sensor.tmp = 4
+        }
+        
         if(this.sensor.tmp<=3){
           if(!this.tmp_dialog && this.tmp_dialog_flag==0) this.tmp_dialog=true
         }
