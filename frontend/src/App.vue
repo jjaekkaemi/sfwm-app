@@ -67,7 +67,7 @@
             depressed
             color="black"
             class="white--text subtitle-1"
-            @click="tmp_dialog = false"
+            @click="alertCheck()"
           >
             확인
           </v-btn>
@@ -131,6 +131,7 @@ export default {
       dialog_content:"불법 주ㆍ정차가 감지되었습니다.",
       tmp_dialog_content:"온도가 낮아져 동파 위험이 있으니 히터를 가동합니다.",
       ws_connect:false,
+      tmp_dialog_flag: 0,
       logdata: [{
         id: 1,
         datetime:"2022-10-04 11:09:01",
@@ -151,10 +152,11 @@ export default {
       socket.on("data", (data)=>{
         this.sensor = data
         if(this.sensor.tmp>3){
-          if(!this.tmp_dialog) this.tmp_dialog=true
+          if(!this.tmp_dialog && this.tmp_dialog_flag==0) this.tmp_dialog=true
         }
         else{
           this.tmp_dialog = false
+          this.tmp_dialog_flag = 0
         }
   
       })
@@ -188,6 +190,10 @@ export default {
     onAlert(id){
       this.img_data = `data:image/jpg;base64,${id}`
       this.alert_dialog = true
+    },
+    alertCheck(){
+      this.tmp_dialog = false; 
+      this.tmp_dialog_flag = 1
     }
   }
 };
