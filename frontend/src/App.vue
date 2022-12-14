@@ -151,13 +151,6 @@ export default {
       })
       socket.on("data", (data)=>{
         this.sensor = data
-        this.count+= 1
-        if(this.count>10){
-          this.sensor.tmp = 3
-        }
-        else{
-          this.sensor.tmp = 4
-        }
         
         if(this.sensor.tmp<=3){
           if(!this.tmp_dialog && this.tmp_dialog_flag==0) this.tmp_dialog=true
