@@ -45,7 +45,7 @@
     </v-row>
   </v-container>
 </template>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4Ab3x39_veJPXrcq6KJ-uSCP5TzO3Ef0"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZJBXGbpGgdZVskdKcoxuC-xeEWOVQ2ns"></script>
 <script>
 import Content from "./content.vue"
 import Table from "./table.vue"
